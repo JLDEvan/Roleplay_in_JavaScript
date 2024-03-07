@@ -1,3 +1,4 @@
+// Variables to keep track of player stats and game state
 let xp = 0;
 let health = 100;
 let gold = 50;
@@ -6,6 +7,7 @@ let fighting;
 let monsterHealth;
 let inventory = ["stick"];
 
+// Selecting DOM elements
 const button1 = document.querySelector('#button1');
 const button2 = document.querySelector("#button2");
 const button3 = document.querySelector("#button3");
@@ -39,6 +41,15 @@ const monsters = [
     health: 300
   }
 ]
+
+// The 'locations' array contains objects representing different locations in the game.
+// Each location object includes properties such as name, button text, button functions, and text.
+// These properties facilitate navigation and interaction within the game world.
+// The 'name' property identifies the location, while 'button text' provides options for player actions.
+// Corresponding 'button functions' execute actions when buttons are clicked.
+// Additionally, each location provides descriptive 'text' to immerse players in the game environment.
+// This structured approach enhances game development and player engagement.
+
 const locations = [
   {
     name: "town square",
@@ -187,17 +198,24 @@ function goFight() {
 function attack() {
   text.innerText = "The " + monsters[fighting].name + " attacks.";
   text.innerText += " You attack it with your " + weapons[currentWeapon].name + ".";
+  // Reduce player's health based on the monster's attack value
   health -= getMonsterAttackValue(monsters[fighting].level);
+  // If player's attack hits the monster, reduce monster's health
   if (isMonsterHit()) {
     monsterHealth -= weapons[currentWeapon].power + Math.floor(Math.random() * xp) + 1;    
+    // Display a message if player's attack misses
   } else {
     text.innerText += " You miss.";
   }
+  // Update player's health and monster's health display
   healthText.innerText = health;
   monsterHealthText.innerText = monsterHealth;
+   // Check if player or monster is defeated
   if (health <= 0) {
     lose();
   } else if (monsterHealth <= 0) {
+    // If the current fight is against the dragon (fighting === 2), the player wins the game; 
+// otherwise, the player defeats the current monster.
     if (fighting === 2) {
       winGame();
     } else {
@@ -210,7 +228,9 @@ function attack() {
   }
 }
 
+// Function to calculate the monster's attack value
 function getMonsterAttackValue(level) {
+  // Calculate the potential damage of the monster's attack based on its level and randomness
   const hit = (level * 5) - (Math.floor(Math.random() * xp));
   console.log(hit);
   return hit > 0 ? hit : 0;
