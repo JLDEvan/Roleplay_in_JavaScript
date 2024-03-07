@@ -284,23 +284,29 @@ function pickEight() {
   pick(8);
 }
 
+// Function to handle player's pick in the Easter egg game
 function pick(guess) {
+   // Generate an array of 10 random numbers between 0 and 10
   const numbers = [];
   while (numbers.length < 10) {
     numbers.push(Math.floor(Math.random() * 11));
   }
+  // Display the player's pick and the generated random numbers
   text.innerText = "You picked " + guess + ". Here are the random numbers:\n";
   for (let i = 0; i < 10; i++) {
     text.innerText += numbers[i] + "\n";
   }
+  // If the pick matches, award the player with 20 gold
   if (numbers.includes(guess)) {
     text.innerText += "Right! You win 20 gold!";
     gold += 20;
     goldText.innerText = gold;
+  // If the pick does not match, penalize the player with -10 health
   } else {
     text.innerText += "Wrong! You lose 10 health!";
     health -= 10;
     healthText.innerText = health;
+  // Check if the player has lost all health points
     if (health <= 0) {
       lose();
     }
